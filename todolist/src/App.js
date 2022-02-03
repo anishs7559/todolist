@@ -3,6 +3,7 @@ import React,{useState} from 'react';
 const App = () => {
   const [todo,setTodo]=useState([])
   const [todos,setTodos]=useState('')
+  const [edit,setEdit] =useState([])
   function handleSubmit(e){
   e.preventDefault()
   setTodo([...todo,{ text:todos,
@@ -10,6 +11,10 @@ const App = () => {
     complete:false}])
   setTodos('')
   }
+ function handleDelete(id){
+   const updatedTodo=[...todo].filter((todo)=>todo.id!==id)
+   setTodo(updatedTodo)
+ }
   return (
   <div>
     <form onSubmit={handleSubmit} >
@@ -19,7 +24,7 @@ const App = () => {
    {todo.map((newtodo)=>{
      return(
        
-       <div key={newtodo.id}>{newtodo.text}</div>
+       <div key={newtodo.id}>{newtodo.text} <button onClick={()=>{handleDelete(newtodo.id)}}>delete</button> <button>edit</button></div>
      )
    })}
   </div> 
