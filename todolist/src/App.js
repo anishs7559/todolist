@@ -1,35 +1,28 @@
 import React,{useState} from 'react';
 
 const App = () => {
-  const [todos,setTodos] =useState([])
-  const [todo,setTodo] = useState('')
-  const handleSubmit =(e)=>{
-    e.PreventDefault()
-    const newTodo ={
-      id:new Date().getTime(),
-      text:todo,
-      complete:false
-    }
-    setTodos([...todos].concat(newTodo))
-    setTodo('')
+  const [todo,setTodo]=useState([])
+  const [todos,setTodos]=useState('')
+  function handleSubmit(e){
+  e.preventDefault()
+  setTodo([...todo,{ text:todos,
+    id:new Date().getTime(),
+    complete:false}])
+  setTodos('')
   }
-  return(
-   <div>
-   <form onSubmit={handleSubmit} >
-     <input onChange={(e)=>setTodo(e.target.value)} value={todo}/>
-     <button>add todo</button>
-   </form>
-  
-  {todos.map(todo=>{
-    console.log(todo.text);
-    return(
-      
-     <h1>{todo.text}</h1>
-      
-    )
-  })}
-    
-  </div>
+  return (
+  <div>
+    <form onSubmit={handleSubmit} >
+  <input  onChange={(e)=>{setTodos(e.target.value)}} value={todos}/>
+  <button type='submit'>add todo</button>
+    </form>
+   {todo.map((newtodo)=>{
+     return(
+       
+       <div key={newtodo.id}>{newtodo.text}</div>
+     )
+   })}
+  </div> 
   )
 };
 
