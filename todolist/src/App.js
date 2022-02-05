@@ -1,9 +1,10 @@
 import React,{useState} from 'react';
+import './App.css'
 
 const App = () => {
   const [todo,setTodo]=useState([])
   const [todos,setTodos]=useState('')
-  const [edit,setEdit] =useState([])
+  const [edit,setEdit] =useState('')
   function handleSubmit(e){
   e.preventDefault()
   setTodo([...todo,{ text:todos,
@@ -15,6 +16,15 @@ const App = () => {
    const updatedTodo=[...todo].filter((todo)=>todo.id!==id)
    setTodo(updatedTodo)
  }
+ const handleEdit=(id)=>{
+   const update = {
+     id:new Date().getTime(),
+     text:edit,
+     complete:false
+
+   }
+   setTodo([...todo].concat(update))
+ }
   return (
   <div>
     <form onSubmit={handleSubmit} >
@@ -24,7 +34,12 @@ const App = () => {
    {todo.map((newtodo)=>{
      return(
        
-       <div key={newtodo.id}>{newtodo.text} <button onClick={()=>{handleDelete(newtodo.id)}}>delete</button> <button>edit</button></div>
+       <div 
+      key={newtodo.id}>
+        <div >{newtodo.text}</div>
+         <button onClick={()=>{handleDelete(newtodo.id)}}>delete</button>
+         <input type="text" onChange={(e)=>setEdit(e.target.value)} />
+          <button onClick={()=>{handleEdit(todo.id)}}>edit</button></div>
      )
    })}
   </div> 
