@@ -1,45 +1,48 @@
 import React,{useState} from 'react';
 import './App.css'
-
 const App = () => {
-  const [todo,setTodo]=useState([])
-  const [todos,setTodos]=useState('')
-  const [edit,setEdit] =useState('')
+  const [input,setInput]=useState([])
+  const [value,setValue]=useState('')
+  
   function handleSubmit(e){
   e.preventDefault()
-  setTodo([...todo,{ text:todos,
+  setInput([...input,{ text:value,
     id:new Date().getTime(),
     complete:false}])
-  setTodos('')
+  setValue('')
   }
  function handleDelete(id){
-   const updatedTodo=[...todo].filter((todo)=>todo.id!==id)
-   setTodo(updatedTodo)
+   const updatedTodo=[...input].filter((todo)=>todo.id!==id)
+   setInput(updatedTodo)
  }
- const handleEdit=(id)=>{
-   const update = {
-     id:new Date().getTime(),
-     text:edit,
-     complete:false
+ const handleToggle=(id)=>{
+  
+   const update =[...input].map((input)=>{
+     
+       if(input.id===id){
+        input.complete=!input.complete
+       }
+       return input
+     
+   })
+   setInput(update)
+ }
 
-   }
-   setTodo([...todo].concat(update))
- }
   return (
   <div>
     <form onSubmit={handleSubmit} >
-  <input  onChange={(e)=>{setTodos(e.target.value)}} value={todos}/>
+  <input  onChange={(e)=>{setValue(e.target.value)}} value={value}/>
   <button type='submit'>add todo</button>
     </form>
-   {todo.map((newtodo)=>{
+   {input.map((todo)=>{
      return(
        
        <div 
-      key={newtodo.id}>
-        <div >{newtodo.text}</div>
-         <button onClick={()=>{handleDelete(newtodo.id)}}>delete</button>
-         <input type="text" onChange={(e)=>setEdit(e.target.value)} />
-          <button onClick={()=>{handleEdit(todo.id)}}>edit</button></div>
+      key={todo.id}>
+        <div className={todo.complete?'strike':''} onClick={()=>{handleToggle(todo.id)}} >{todo.text}</div>
+         <button onClick={()=>{handleDelete(todo.id)}}>delete</button>
+
+         </div>
      )
    })}
   </div> 
