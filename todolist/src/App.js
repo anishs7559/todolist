@@ -4,7 +4,7 @@ const App = () => {
   const [input,setInput]=useState([])
   const [value,setValue]=useState('')
   const [edit,setEdit]=useState('')
-  const [todoEdit,setTodoEdit]=(null)
+  const [todoEdit,setTodoEdit]=useState(null)
   
   function handleSubmit(e){
   e.preventDefault()
@@ -28,6 +28,18 @@ const App = () => {
      
    })
    setInput(update)
+  
+ }
+ const editTodo=(id)=>{
+  const update =[...input].map((todo)=>{
+    if(todo.id===id){
+      todo.text=edit
+    }
+    return todo
+  })
+  setInput(update)
+  setTodoEdit(null)
+  setEdit('')
  }
   return (
   <div>
@@ -41,8 +53,11 @@ const App = () => {
       key={todo.id}>
           {todoEdit===todo.id?( <input value={edit} onChange={(e)=>{setEdit(e.target.value)}}/>):
           ( <div className={todo.complete?'strike':''} onClick={()=>{handleToggle(todo.id)}} >{todo.text}</div>)}
+         
+         {todoEdit===todo.id?(<button onClick={()=>editTodo(todo.id)}>submit</button>):
+         (<button onClick={()=>setTodoEdit(todo.id)}>edit</button>)}
          <button onClick={()=>{handleDelete(todo.id)}}>delete</button>
-         <button onClick={()=>setTodoEdit(todo.id)}>edit</button>
+     
 
          </div>
      )
